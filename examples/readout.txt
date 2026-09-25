@@ -1,0 +1,59 @@
+======================================================================
+A/B TEST READOUT — simulated checkout experiment
+======================================================================
+Design:        control vs test, n=50,000/group, base rate=12%, TRUE lift=+5% (known, seeded)
+
+----------------------------------------------------------------------
+1. OBSERVED RESULTS
+----------------------------------------------------------------------
+  control: n=50,000, conversions=6,022, rate=0.1204
+  test:    n=50,000, conversions=6,348, rate=0.1270
+  observed lift: +5.41% relative (+0.65 pp absolute)
+
+----------------------------------------------------------------------
+2. HYPOTHESIS TESTS (H0: no difference, alpha=0.05)
+----------------------------------------------------------------------
+  two-proportion z-test: z=+3.131, p=1.741e-03
+    lift estimate +5.41% relative, 95% CI [+2.03%, +8.80%]
+  Welch's t-test:        t=+3.131, p=1.741e-03, 95% CI [+0.0024, +0.0106]
+  Mann-Whitney U:        U=1,258,150,000, p=1.741e-03
+    Hodges-Lehmann median diff +0.0000, 95% CI [+0.0000, +0.0000]
+    (HL is degenerate for 0/1 outcomes: pairwise diffs are only -1/0/+1, so the median diff is 0 — the p-value is what matters here)
+  => primary test (z-test): SIGNIFICANT — reject H0
+
+----------------------------------------------------------------------
+3. POWER ANALYSIS (MDE = +5% relative, alpha=0.05, target power=0.80)
+----------------------------------------------------------------------
+  required n per group for 80% power: 47,030
+  actual n per group:                 50,000
+  achieved power at actual n:         82.3%
+  => the test was adequately powered for the MDE
+
+----------------------------------------------------------------------
+4. GROUP-SEQUENTIAL ANALYSIS (Pocock, K=5 looks, alpha=0.05)
+----------------------------------------------------------------------
+  Pocock boundary (constant critical value): |z| >= 2.4132
+  look 1: z=+2.225
+  look 2: z=+1.539
+  look 3: z=+2.233
+  look 4: z=+3.170 <-- STOP, boundary crossed
+  look 5: z=+3.131 <-- STOP, boundary crossed
+  => could have stopped early at look 4 of 5 with the overall 5% error rate intact
+
+----------------------------------------------------------------------
+5. CUPED VARIANCE REDUCTION (pre-period covariate)
+----------------------------------------------------------------------
+  theta (control fit): 0.2932
+  covariate-outcome correlation: +0.294
+  variance reduction on control: 8.6%
+  unadjusted: lift +5.41%, p=1.740e-03, CI width=6.78% (relative)
+  CUPED-adjusted: lift +5.38%, p=1.102e-03, CI width=6.46% (relative)
+  CI width shrink from CUPED: 4.6%
+
+======================================================================
+CONCLUSION
+======================================================================
+  The test detected the true +5% lift (observed +5.41%, p=1.74e-03).
+  A Pocock sequential design would have stopped at look 4/5, saving 20% of the sample.
+  CUPED cut variance by 8.6% and shrank the CI by 4.6% — free precision from pre-period data.
+
