@@ -106,6 +106,10 @@ ab-test-analyzer/
 Requirements: Python 3.10+, `numpy`, `pandas`, `scipy`, `statsmodels`
 (see `requirements.txt`).
 
+Makefile shortcuts are available for the same commands (`make setup`,
+`make test`, `make example`, `make generate`); set `PYTHON=` to point at an
+existing interpreter instead of the default `.venv`.
+
 ## Key design decisions
 
 1. **Ground truth is known.** Every method is validated against data I
